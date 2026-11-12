@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quencivel Pagente | Community Service & Advocacy</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: {
+                            900: '#090c10',
+                            800: '#0d1117',
+                            700: '#161b22',
+                            600: '#21262d'
+                        },
+                        accent: {
+                            emerald: '#10b981',
+                            teal: '#0d9488',
+                            cyan: '#38bdf8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Reset & Baseline Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: url("landscape.jpg") no-repeat center / cover fixed;
+            color: #e6edf3;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Ambient Background Overlay */
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: 
+                radial-gradient(900px circle at 15% 20%, rgba(16, 185, 129, 0.12), transparent 60%),
+                radial-gradient(800px circle at 85% 80%, rgba(56, 189, 248, 0.1), transparent 60%),
+                radial-gradient(700px circle at 50% 50%, rgba(0, 0, 0, 0.35), transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Subtle Grain Texture */
+        .bg-grain {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Pure Transparent Glass Panel Frame */
+        .glass-panel {
+            background: rgba(13, 17, 23, 0.45);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 35px 70px -15px rgba(0, 0, 0, 0.65),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* Glass Card Container */
+        .glass-card {
+            background: rgba(22, 27, 34, 0.35);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Gallery Card Specific Styling */
+        .gallery-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            height: 260px;
+            background: rgba(22, 27, 34, 0.35);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+        }
+
+        .gallery-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(9, 12, 16, 0.95) 0%, rgba(9, 12, 16, 0.4) 50%, transparent 100%);
+            opacity: 0.4;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Hidden by default, shown on hover */
+        .gallery-card .card-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.1rem;
+            z-index: 2;
+            transform: translateY(15px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(16, 185, 129, 0.45);
+            box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.25);
+            background: rgba(22, 27, 34, 0.55);
+        }
+
+        .gallery-card:hover img {
+            transform: scale(1.12);
+            filter: brightness(0.85);
+        }
+
+        .gallery-card:hover::after {
+            opacity: 0.95;
+        }
+
+        .gallery-card:hover .card-text {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Typography */
+        h1, h2, h3, .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Navigation Links */
+        .nav-link {
+            position: relative;
+            color: #cbd5e1;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.4rem 0.65rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        @media (min-width: 1280px) {
+            .nav-link {
+                font-size: 0.8125rem;
+                padding: 0.4rem 0.75rem;
+            }
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0.5rem;
+            right: 0.5rem;
+            height: 2px;
+            background: #10b981;
+            border-radius: 2px;
+            opacity: 0;
+            transform: scaleX(0);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        /* Log Out Button */
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 0.4rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            flex-shrink: 0;
+            backdrop-filter: blur(4px);
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.7);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+        }
+
+        /* Entrance Zoom Animation */
+        .animate-zoom-in {
+            animation: zoomIn 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.97) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090c10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #21262d;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #30363d;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+
+    <!-- Ambient Background Layers -->
+    <div class="ambient-bg"></div>
+    <div class="bg-grain"></div>
+
+    <!-- Main Container Layout -->
+    <div class="glass-panel relative z-10 w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden animate-zoom-in my-auto flex flex-col min-h-[750px]">
+        
+        <!-- Header / Navigation Bar -->
+        <header class="w-full px-5 sm:px-8 py-4 md:py-5 flex items-center justify-between border-b border-white/10 relative z-30 gap-4">
+            
+            <!-- Brand Logo -->
+            <a href="PAGE-1.HTML" class="flex items-center gap-2 group shrink-0">
+                <span class="font-heading font-bold text-xl md:text-2xl lg:text-3xl tracking-tight text-white group-hover:text-emerald-400 transition-colors">
+                    Website.
+                </span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden lg:flex items-center gap-3 shrink-0">
+                <nav class="flex items-center gap-1.5 xl:gap-2 tracking-wide">
+                    <a href="PAGE-2.html" class="nav-link">Personal Reflection</a>
+                    <a href="PAGE-3.HTML" class="nav-link active">Community Service or Advocacy</a>
+                    <a href="PAGE-4.HTML" class="nav-link">Inspirational Portfolio</a>
+                    <a href="PAGE-5.html" class="nav-link">Educational or Information</a>
+                    <a href="PAGE-6.html" class="nav-link">Faith and Technology Integration</a>
+                </nav>
+
+                <!-- High Visibility Log Out Button -->
+                <a href="WEBSITE.html" class="logout-btn ml-2">
+                    <span>Log Out</span>
+                    <i class="ri-logout-box-r-line"></i>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="menu-btn" aria-label="Toggle Menu" class="lg:hidden text-2xl text-gray-300 hover:text-white p-2.5 rounded-xl border border-white/10 hover:bg-white/5 transition-colors">
+                <i class="ri-menu-3-line" id="menu-icon"></i>
+            </button>
+        </header>
+
+        <!-- Mobile Navigation Menu Drawer -->
+        <div id="mobile-menu" class="hidden lg:hidden flex-col gap-3 px-6 py-5 border-b border-white/10 bg-obsidian-800/80 backdrop-blur-md">
+            <a href="PAGE-2.html" class="text-gray-300 hover:text-white py-2 transition-colors">Personal Reflection</a>
+            <a href="PAGE-3.HTML" class="text-emerald-400 font-medium py-2">Community Service or Advocacy</a>
+            <a href="PAGE-4.HTML" class="text-gray-300 hover:text-white py-2 transition-colors">Inspirational Portfolio</a>
+            <a href="PAGE-5.html" class="text-gray-300 hover:text-white py-2 transition-colors">Educational or Information</a>
+            <a href="PAGE-6.html" class="text-gray-300 hover:text-white py-2 transition-colors">Faith and Technology Integration</a>
+            <a href="WEBSITE.html" class="text-red-400 hover:text-red-300 py-2 flex items-center gap-2 font-semibold transition-colors border-t border-white/10 pt-4 mt-1">
+                <span>Log Out</span>
+                <i class="ri-logout-box-r-line"></i>
+            </a>
+        </div>
+
+        <!-- Main Content Section -->
+        <main class="flex-1 px-4 sm:px-8 md:px-12 py-8 md:py-12 flex flex-col space-y-8 md:space-y-12">
+            
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto space-y-3 px-2">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-mono font-medium tracking-wide backdrop-blur-sm">
+                    <i class="ri-team-line"></i>
+                    <span>Campus & Community Engagement</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
+                    Community Service <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-sky-400">& Advocacy</span>
+                </h1>
+                <p class="text-gray-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+                    Capturing moments of service, teamwork, and active involvement across our campus initiatives.
+                </p>
+            </div>
+
+            <!-- Image Gallery Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 w-full">
+                
+                <!-- Card 1 -->
+                <div class="gallery-card group">
+                    <img src="morning clean up drive.jpg" alt="Morning of General Cleaning" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1528605968697-88b6b896c210?q=80&w=800&auto=format&fit=crop';" />
+                    <div class="card-text p-4">
+                        <span class="text-xs font-mono text-emerald-400 block mb-0.5">Volunteering</span>
+                        <h3 class="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors leading-snug">Morning of General Cleaning</h3>
+                        <p class="text-xs text-gray-300 mt-1 line-clamp-2">Working together to keep our City clean and welcoming for everyone.</p>
+                        <blockquote class="text-[11px] italic text-emerald-300/90 mt-1.5 border-l-2 border-emerald-500/60 pl-2">
+                            "Do not forget to do good and to share with others." — Hebrews 13:16
+                        </blockquote>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="gallery-card group">
+                    <img src="MENTORING.jpg" alt="Mentoring Assembly" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=800&auto=format&fit=crop';" />
+                    <div class="card-text p-4">
+                        <span class="text-xs font-mono text-emerald-400 block mb-0.5">Meeting</span>
+                        <h3 class="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors leading-snug">Student Mentoring</h3>
+                        <p class="text-xs text-gray-300 mt-1 line-clamp-2">Guiding and supporting fellow students to help them grow academically and personally.</p>
+                        <blockquote class="text-[11px] italic text-emerald-300/90 mt-1.5 border-l-2 border-emerald-500/60 pl-2">
+                            "As iron sharpens iron, so one person sharpens another." — Proverbs 27:17
+                        </blockquote>
+                    </div>
+                </div>
+
+                <!-- Card 3 (Changed to Green) -->
+                <div class="gallery-card group">
+                    <img src="kickoff.png" alt="Campus Kickoff" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop';" />
+                    <div class="card-text p-4">
+                        <span class="text-xs font-mono text-emerald-400 block mb-0.5">Events</span>
+                        <h3 class="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors leading-snug">Campus Kickoff</h3>
+                        <p class="text-xs text-gray-300 mt-1 line-clamp-2">Starting the new academic journey united with enthusiasm and high spirits.</p>
+                        <blockquote class="text-[11px] italic text-emerald-300/90 mt-1.5 border-l-2 border-emerald-500/60 pl-2">
+                            "Commit to the Lord whatever you do, and he will establish your plans." — Proverbs 16:3
+                        </blockquote>
+                    </div>
+                </div>
+
+                <!-- Card 4 (Changed to Green) -->
+                <div class="gallery-card group">
+                    <img src="LAST DAY SINAG.jpg" alt="Sinag day" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=800&auto=format&fit=crop';" />
+                    <div class="card-text p-4">
+                        <span class="text-xs font-mono text-emerald-400 block mb-0.5">Event</span>
+                        <h3 class="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors leading-snug">Sinag Day</h3>
+                        <p class="text-xs text-gray-300 mt-1 line-clamp-2">SINAG is an event where we take our first steps and begin our journey as proud Lux Mundi students.</p>
+                        <blockquote class="text-[11px] italic text-emerald-300/90 mt-1.5 border-l-2 border-emerald-500/60 pl-2">
+                            "Let your light shine before others, that they may see your good deeds." — Matthew 5:16
+                        </blockquote>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="gallery-card group">
+                    <img src="ASSEMBLY.jpg" alt="General Assembly" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1475721027785-f74eccf877e2?q=80&w=800&auto=format&fit=crop';" />
+                    <div class="card-text p-4">
+                        <span class="text-xs font-mono text-emerald-400 block mb-0.5">Assembly</span>
+                        <h3 class="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors leading-snug">Student General Assembly</h3>
+                        <p class="text-xs text-gray-300 mt-1 line-clamp-2">Gathering to share updates, align objectives, and foster strong leadership.</p>
+                        <blockquote class="text-[11px] italic text-emerald-300/90 mt-1.5 border-l-2 border-emerald-500/60 pl-2">
+                            "How good and pleasant it is when God's people live together in unity!" — Psalm 133:1
+                        </blockquote>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="gallery-card group">
+                    <img src="ICS-CUP.jpg" alt="Clean-up Drive" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1475721027785-f74eccf877e2?q=80&w=800&auto=format&fit=crop';" />
+                    <div class="card-text p-4">
+                        <span class="text-xs font-mono text-emerald-400 block mb-0.5">Activity</span>
+                        <h3 class="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors leading-snug">Clean-up Drive Program</h3>
+                        <p class="text-xs text-gray-300 mt-1 line-clamp-2">Building unity and fair play through organized events.</p>
+                        <blockquote class="text-[11px] italic text-emerald-300/90 mt-1.5 border-l-2 border-emerald-500/60 pl-2">
+                            "Run in such a way as to get the prize." — 1 Corinthians 9:24
+                        </blockquote>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Reflection Message Card (Pure Glass Style) -->
+            <div class="glass-card p-6 sm:p-8 md:p-10 rounded-2xl max-w-4xl mx-auto w-full relative overflow-hidden">
+                <div class="flex items-center gap-3 border-b border-white/10 pb-4 mb-5">
+                    <i class="ri-lightbulb-line text-2xl text-emerald-400 shrink-0"></i>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white">Light & Hope Reflection</h2>
+                </div>
+                <div class="space-y-4">
+                    <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
+                        We live in a world where many people face stress, pain, and sadness. In these moments, light becomes a powerful symbol of hope and love. Jesus Christ is called the Light of the World because He shows us the way to truth, love, and goodness. His teachings guide us to choose what is right, even when the path seems dark.
+                    </p>
+                    <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
+                        Being touched by the Light of the World also means sharing that light with others. Through kindness, forgiveness, compassion, and respect, we can reflect His light in our daily lives. When we choose to help, to understand, and to love, we bring hope to those around us. In this way, the Light of the World continues to shine, reminding us that darkness can never overcome light.
+                    </p>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer Bar -->
+        <footer class="w-full px-6 sm:px-8 py-5 border-t border-white/10 flex items-center justify-between text-xs sm:text-sm text-gray-400">
+            <p>© <span id="year"></span> PAGENTE.Q All Rights Reserved</p>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript Interactivity -->
+    <script>
+        // Set dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle Drawer
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        menuBtn.addEventListener('click', () => {
+            const isClosed = mobileMenu.classList.contains('hidden');
+            if (isClosed) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.classList.add('flex');
+                menuIcon.classList.remove('ri-menu-3-line');
+                menuIcon.classList.add('ri-close-line');
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                menuIcon.classList.remove('ri-close-line');
+                menuIcon.classList.add('ri-menu-3-line');
+            }
+        });
+    </script>
+</body>
+</html>
