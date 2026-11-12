@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quencivel Pagente | Portfolio</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: {
+                            900: '#090c10',
+                            800: '#0d1117',
+                            700: '#161b22',
+                            600: '#21262d'
+                        },
+                        accent: {
+                            emerald: '#10b981',
+                            teal: '#0d9488',
+                            cyan: '#38bdf8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Reset & Baseline Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: url("landscape2.jpg") no-repeat center / cover fixed;
+            color: #e6edf3;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem 1rem;
+            position: relative;
+        }
+
+        /* Ambient Background */
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: 
+                radial-gradient(900px circle at 15% 20%, rgba(16, 185, 129, 0.12), transparent 60%),
+                radial-gradient(800px circle at 85% 80%, rgba(56, 189, 248, 0.1), transparent 60%),
+                radial-gradient(700px circle at 50% 50%, rgba(0, 0, 0, 0.35), transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Subtle Grain */
+        .bg-grain {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Main Panel Container - Pure Transparent Glassmorphism */
+        .glass-panel {
+            background: rgba(13, 17, 23, 0.45);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 35px 70px -15px rgba(0, 0, 0, 0.65),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* Glass Inner Card */
+        .glass-card {
+            background: rgba(22, 27, 34, 0.35);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(16, 185, 129, 0.4);
+            background: rgba(22, 27, 34, 0.55);
+        }
+
+        /* Typography */
+        h1, h2, .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Fitted Nav Links */
+        .nav-link {
+            position: relative;
+            color: #cbd5e1;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.3rem 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        @media (min-width: 1280px) {
+            .nav-link {
+                font-size: 0.8125rem;
+                padding: 0.35rem 0.65rem;
+            }
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0.5rem;
+            right: 0.5rem;
+            height: 2px;
+            background: #10b981;
+            border-radius: 2px;
+            opacity: 0;
+            transform: scaleX(0);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        /* Log Out Button Style */
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            flex-shrink: 0;
+            backdrop-filter: blur(4px);
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.7);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+        }
+
+        /* Custom Social Icons */
+        .social-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.85rem;
+            height: 2.85rem;
+            border-radius: 0.85rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #e2e8f0;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .social-btn:hover {
+            color: #10b981;
+            border-color: rgba(16, 185, 129, 0.5);
+            background: rgba(16, 185, 129, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Tooltips */
+        .social-btn[data-label]::before {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -2.5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            padding: 0.3rem 0.65rem;
+            background: rgba(13, 17, 23, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e6edf3;
+            font-size: 0.725rem;
+            font-weight: 500;
+            white-space: nowrap;
+            border-radius: 0.375rem;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            backdrop-filter: blur(8px);
+        }
+
+        .social-btn[data-label]:hover::before {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Typing Cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background-color: #10b981;
+            margin-left: 4px;
+            animation: blink 0.9s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Entrance Zoom Animation */
+        .animate-zoom-in {
+            animation: zoomIn 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.97) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090c10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #21262d;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #30363d;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Background Layers -->
+    <div class="ambient-bg"></div>
+    <div class="bg-grain"></div>
+
+    <!-- Main Container -->
+    <div class="glass-panel relative z-10 w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden animate-zoom-in my-auto flex flex-col min-h-[750px]">
+        
+        <!-- Header / Navigation Bar -->
+        <header class="w-full px-4 sm:px-6 md:px-8 py-4 flex items-center justify-between border-b border-white/10 relative z-30 gap-3">
+            
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2 group shrink-0">
+                <span class="font-heading font-bold text-xl md:text-2xl lg:text-3xl tracking-tight text-white group-hover:text-emerald-400 transition-colors">
+                    Website.
+                </span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
+                <nav class="flex items-center gap-1 xl:gap-2 tracking-wide">
+                    <a href="PAGE-2.html" class="nav-link">Personal Reflection</a>
+                    <a href="PAGE-3.html" class="nav-link">Community Service or Advocacy</a>
+                    <a href="PAGE-4.HTML" class="nav-link">Inspirational Portfolio</a>
+                    <a href="PAGE-5.html" class="nav-link">Educational or Information</a>
+                    <a href="PAGE-6.html" class="nav-link">Faith and Technology Integration</a>
+                </nav>
+
+                <!-- High Visibility Log Out Button -->
+                <a href="WEBSITE.html" class="logout-btn ml-1">
+                    <span>Log Out</span>
+                    <i class="ri-logout-box-r-line"></i>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="menu-btn" aria-label="Toggle Menu" class="lg:hidden text-2xl text-gray-300 hover:text-white p-2 rounded-lg border border-white/10 hover:bg-white/5 transition-colors">
+                <i class="ri-menu-3-line" id="menu-icon"></i>
+            </button>
+        </header>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden flex-col gap-3 px-6 py-5 border-b border-white/10 bg-obsidian-800/80 backdrop-blur-md">
+            <a href="PAGE-2.html" class="text-gray-300 hover:text-white py-1.5 transition-colors">Personal Reflection</a>
+            <a href="PAGE-3.HTML" class="text-gray-300 hover:text-white py-1.5 transition-colors">Community Service or Advocacy</a>
+            <a href="PAGE-4.HTML" class="text-gray-300 hover:text-white py-1.5 transition-colors">Inspirational Portfolio</a>
+            <a href="PAGE-5.html" class="text-gray-300 hover:text-white py-1.5 transition-colors">Educational or Information</a>
+            <a href="PAGE-6.html" class="text-gray-300 hover:text-white py-1.5 transition-colors">Faith and Technology Integration</a>
+            <a href="WEBSITE.html" class="text-red-400 hover:text-red-300 py-1.5 flex items-center gap-1.5 font-semibold transition-colors border-t border-white/10 pt-3 mt-1">
+                <span>Log Out</span>
+                <i class="ri-logout-box-r-line"></i>
+            </a>
+        </div>
+
+        <!-- Hero Content Section -->
+        <main class="flex-1 px-8 md:px-16 py-10 md:py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left Bio Block -->
+            <div class="lg:col-span-7 flex flex-col items-start space-y-7 order-2 lg:order-1">
+                
+                <!-- Student Tag Badge -->
+                <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-mono font-medium tracking-wide backdrop-blur-sm">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Lux Mundi Student</span>
+                </div>
+
+                <!-- Main Headlines -->
+                <div class="space-y-3">
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight">
+                        Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-sky-400">Quencivel Pagente</span>
+                    </h1>
+                    
+                    <h2 class="text-xl sm:text-2xl font-medium text-gray-300 min-h-[36px] flex items-center font-mono">
+                        <span class="text-gray-400 mr-2.5">&gt;</span>
+                        <span id="typed-text" class="text-emerald-300 font-semibold"></span>
+                        <span class="typing-cursor"></span>
+                    </h2>
+                </div>
+
+                <!-- Bio Content Card (Transparent Glass) -->
+                <div class="glass-card p-6 sm:p-7 rounded-2xl space-y-4 text-gray-200 text-base sm:text-lg leading-relaxed w-full">
+                    <p>
+                        I’m an aspiring <strong class="text-white font-semibold">ICS student</strong> at <span class="text-emerald-400 font-medium">Tangub City Global College</span>.
+                    </p>
+                    <p class="text-sm sm:text-base text-gray-300 border-t border-white/10 pt-4 italic">
+                        "I believe learning takes time, but the practical experience gained along the journey is the most rewarding part of building a career."
+                    </p>
+                </div>
+
+                <!-- Actions & Social Links -->
+                <div class="flex flex-wrap items-center gap-5 pt-2 w-full">
+                    
+                    <!-- Download CV Button -->
+                    <a href="#" class="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400 transition-all shadow-xl shadow-emerald-500/20 active:scale-95">
+                        <i class="ri-download-2-line text-lg"></i>
+                        <span>Download CV</span>
+                    </a>
+
+                    <!-- Social Icons Grid -->
+                    <div class="flex items-center gap-2.5 flex-wrap">
+                        <a href="#" class="social-btn" aria-label="GitHub" data-label="GitHub">
+                            <i class="ri-github-fill text-xl"></i>
+                        </a>
+                        <a href="#" class="social-btn" aria-label="LinkedIn" data-label="LinkedIn">
+                            <i class="ri-linkedin-fill text-xl"></i>
+                        </a>
+                        <a href="#" class="social-btn" aria-label="Twitter X" data-label="@cvl.q25">
+                            <i class="ri-twitter-x-fill text-xl"></i>
+                        </a>
+                        <a href="#" class="social-btn" aria-label="YouTube" data-label="Quequen Caban">
+                            <i class="ri-youtube-fill text-xl"></i>
+                        </a>
+                        <a href="#" class="social-btn" aria-label="Facebook" data-label="Quen Civel Pagente">
+                            <i class="ri-facebook-circle-fill text-xl"></i>
+                        </a>
+                        <a href="#" class="social-btn" aria-label="Instagram" data-label="@cvl.q25">
+                            <i class="ri-instagram-line text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Avatar Box -->
+            <div class="lg:col-span-5 flex justify-center items-center order-1 lg:order-2">
+                <div class="relative w-56 h-56 sm:w-72 sm:h-72 lg:w-96 lg:h-96">
+                    
+                    <!-- Organic Glow Backdrop -->
+                    <div class="absolute -inset-3 rounded-full bg-gradient-to-tr from-emerald-500/30 to-sky-500/30 blur-2xl"></div>
+
+                    <!-- Clean Avatar Frame -->
+                    <div class="relative w-full h-full rounded-full p-2 bg-gradient-to-b from-white/20 to-white/5 border border-white/15 shadow-2xl overflow-hidden group backdrop-blur-sm">
+                        <div class="w-full h-full rounded-full overflow-hidden bg-obsidian-700/50 relative">
+                            <img 
+                                src="me.jpg" 
+                                alt="Quencivel Pagente"
+                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop';"
+                                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                            />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer Bar -->
+        <footer class="w-full px-6 md:px-10 py-5 border-t border-white/10 flex items-center justify-between text-xs sm:text-sm text-gray-400">
+            <p>© <span id="year"></span> PAGENTE.Q All Rights Reserved</p>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript Interactivity -->
+    <script>
+        // Dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        menuBtn.addEventListener('click', () => {
+            const isClosed = mobileMenu.classList.contains('hidden');
+            if (isClosed) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.classList.add('flex');
+                menuIcon.classList.remove('ri-menu-3-line');
+                menuIcon.classList.add('ri-close-line');
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                menuIcon.classList.remove('ri-close-line');
+                menuIcon.classList.add('ri-menu-3-line');
+            }
+        });
+
+        // Typing Effect
+        const roles = [
+            "Aspiring ICS Student",
+            "Future Web Developer",
+            "Tech Enthusiast"
+        ];
+
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typedTextElement = document.getElementById('typed-text');
+
+        function typeEffect() {
+            const currentRole = roles[roleIndex];
+
+            if (isDeleting) {
+                typedTextElement.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typedTextElement.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let delta = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIndex === currentRole.length) {
+                delta = 2200;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+                delta = 400;
+            }
+
+            setTimeout(typeEffect, delta);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(typeEffect, 600);
+        });
+    </script>
+</body>
+</html>
