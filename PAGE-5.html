@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quencivel Pagente | Educational & Services</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: {
+                            900: '#090c10',
+                            800: '#0d1117',
+                            700: '#161b22',
+                            600: '#21262d'
+                        },
+                        accent: {
+                            emerald: '#10b981',
+                            teal: '#0d9488',
+                            cyan: '#38bdf8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Reset & Baseline Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: url("jelly.jpg") no-repeat center / cover fixed;
+            color: #e6edf3;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem 1rem;
+            position: relative;
+        }
+
+        /* Ambient Background Overlay */
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: 
+                radial-gradient(900px circle at 15% 20%, rgba(16, 185, 129, 0.12), transparent 60%),
+                radial-gradient(800px circle at 85% 80%, rgba(56, 189, 248, 0.1), transparent 60%),
+                radial-gradient(700px circle at 50% 50%, rgba(0, 0, 0, 0.35), transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Subtle Grain Texture */
+        .bg-grain {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Pure Transparent Glass Panel Frame */
+        .glass-panel {
+            background: rgba(13, 17, 23, 0.45);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 35px 70px -15px rgba(0, 0, 0, 0.65),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* Semi-Transparent Glass Card */
+        .glass-card {
+            background: rgba(22, 27, 34, 0.35);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(16, 185, 129, 0.45);
+            background: rgba(22, 27, 34, 0.55);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Typography */
+        h1, h2, .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Navigation Links */
+        .nav-link {
+            position: relative;
+            color: #cbd5e1;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.3rem 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        @media (min-width: 1280px) {
+            .nav-link {
+                font-size: 0.8125rem;
+                padding: 0.35rem 0.65rem;
+            }
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0.5rem;
+            right: 0.5rem;
+            height: 2px;
+            background: #10b981;
+            border-radius: 2px;
+            opacity: 0;
+            transform: scaleX(0);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        /* Log Out Button */
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            flex-shrink: 0;
+            backdrop-filter: blur(4px);
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.7);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+        }
+
+        /* Modal Overlay Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(9, 12, 16, 0.75);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: rgba(13, 17, 23, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        /* Spinner Loader */
+        .loader {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Entrance Zoom Animation */
+        .animate-zoom-in {
+            animation: zoomIn 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.97) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090c10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #21262d;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #30363d;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Background Layers -->
+    <div class="ambient-bg"></div>
+    <div class="bg-grain"></div>
+
+    <!-- Main Container Layout -->
+    <div class="glass-panel relative z-10 w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden animate-zoom-in my-auto flex flex-col min-h-[750px]">
+        
+        <!-- Header / Navigation Bar -->
+        <header class="w-full px-4 sm:px-6 md:px-8 py-4 flex items-center justify-between border-b border-white/10 relative z-30 gap-3">
+            
+            <!-- Brand Logo -->
+            <a href="PAGE-1.HTML" class="flex items-center gap-2 group shrink-0">
+                <span class="font-heading font-bold text-xl md:text-2xl lg:text-3xl tracking-tight text-white group-hover:text-emerald-400 transition-colors">
+                    Website.
+                </span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
+                <nav class="flex items-center gap-1 xl:gap-2 tracking-wide">
+                    <a href="PAGE-2.html" class="nav-link">Personal Reflection</a>
+                    <a href="PAGE-3.HTML" class="nav-link">Community Service or Advocacy</a>
+                    <a href="PAGE-4.HTML" class="nav-link">Inspirational Portfolio</a>
+                    <a href="PAGE-5.html" class="nav-link active">Educational or Information</a>
+                    <a href="PAGE-6.html" class="nav-link">Faith and Technology Integration</a>
+                </nav>
+
+                <!-- High Visibility Log Out Button -->
+                <button onclick="openLogoutModal()" class="logout-btn ml-1">
+                    <span>Log Out</span>
+                    <i class="ri-logout-box-r-line"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="menu-btn" aria-label="Toggle Menu" class="lg:hidden text-2xl text-gray-300 hover:text-white p-2 rounded-lg border border-white/10 hover:bg-white/5 transition-colors">
+                <i class="ri-menu-3-line" id="menu-icon"></i>
+            </button>
+        </header>
+
+        <!-- Mobile Navigation Menu Drawer -->
+        <div id="mobile-menu" class="hidden lg:hidden flex-col gap-3 px-6 py-5 border-b border-white/10 bg-obsidian-800/80 backdrop-blur-md">
+            <a href="PAGE-2.html" class="text-gray-300 hover:text-white py-1.5 transition-colors">Personal Reflection</a>
+            <a href="PAGE-3.HTML" class="text-gray-300 hover:text-white py-1.5 transition-colors">Community Service or Advocacy</a>
+            <a href="PAGE-4.HTML" class="text-gray-300 hover:text-white py-1.5 transition-colors">Inspirational Portfolio</a>
+            <a href="PAGE-5.html" class="text-emerald-400 font-medium py-1.5">Educational or Information</a>
+            <a href="PAGE-6.html" class="text-gray-300 hover:text-white py-1.5 transition-colors">Faith and Technology Integration</a>
+            <button onclick="openLogoutModal()" class="text-red-400 hover:text-red-300 py-1.5 flex items-center gap-1.5 font-semibold transition-colors border-t border-white/10 pt-3 mt-1 text-left w-full bg-transparent border-0 cursor-pointer">
+                <span>Log Out</span>
+                <i class="ri-logout-box-r-line"></i>
+            </button>
+        </div>
+
+        <!-- Main Content Section -->
+        <main class="flex-1 px-6 sm:px-10 md:px-16 py-10 md:py-16 flex flex-col justify-center items-center space-y-10">
+            
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl space-y-3">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-mono font-medium tracking-wide backdrop-blur-sm">
+                    <i class="ri-customer-service-2-line"></i>
+                    <span>How I Can Help Others</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+                    Digital Ethics & <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-sky-400">Responsibility</span>
+                </h1>
+                <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                    Learning kindness, honesty, and respect in the digital world.
+                </p>
+            </div>
+
+            <!-- Service Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+                
+                <!-- Online Kindness Box -->
+                <div class="glass-card p-8 rounded-2xl flex flex-col space-y-4 relative overflow-hidden group">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                        <i class="ri-heart-line"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white">Online Kindness</h2>
+                    <p class="text-gray-200 text-base leading-relaxed">
+                        Being kind online means respecting others, avoiding hate speech, and spreading positivity. Every comment and post reflects who we are.
+                    </p>
+                    <div class="pt-2 flex items-center gap-2 text-xs font-mono text-emerald-400">
+                        <span class="px-2.5 py-1 rounded-md bg-emerald-500/15 border border-emerald-500/30">Respect</span>
+                        <span class="px-2.5 py-1 rounded-md bg-emerald-500/15 border border-emerald-500/30">Positivity</span>
+                    </div>
+                </div>
+
+                <!-- Digital Honesty Box -->
+                <div class="glass-card p-8 rounded-2xl flex flex-col space-y-4 relative overflow-hidden group">
+                    <div class="w-12 h-12 rounded-xl bg-teal-500/15 border border-teal-500/30 text-teal-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                        <i class="ri-shield-check-line"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white">Digital Honesty</h2>
+                    <p class="text-gray-200 text-base leading-relaxed">
+                        Honesty in digital creation includes avoiding plagiarism, giving proper credit, and sharing truthful information online.
+                    </p>
+                    <div class="pt-2 flex items-center gap-2 text-xs font-mono text-teal-400">
+                        <span class="px-2.5 py-1 rounded-md bg-teal-500/15 border border-teal-500/30">Integrity</span>
+                        <span class="px-2.5 py-1 rounded-md bg-teal-500/15 border border-teal-500/30">Attribution</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Additional Paragraph Section (Below the 2 Padding Cards) -->
+            <div class="glass-card p-6 sm:p-8 md:p-10 rounded-2xl max-w-4xl w-full relative overflow-hidden">
+                <div class="flex items-center gap-3 border-b border-white/10 pb-4 mb-4">
+                    <i class="ri-lightbulb-line text-2xl text-emerald-400 shrink-0"></i>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white">Promoting Responsible Technology Use</h2>
+                </div>
+                <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
+                    Practicing digital ethics goes beyond simple guidelines; it is about building a safe, supportive, and respectful online community for everyone. As students and technology users, our online choices leave a lasting digital footprint that influences how others experience digital spaces. By actively choosing empathy over negativity and accuracy over misinformation, we contribute to a healthier digital environment. Ultimately, carrying these values into our daily interactions ensures that technology serves as a tool for connection, learning, and meaningful growth.
+                </p>
+            </div>
+
+        </main>
+
+        <!-- Footer Bar -->
+        <footer class="w-full px-6 md:px-10 py-5 border-t border-white/10 flex items-center justify-between text-xs sm:text-sm text-gray-400">
+            <p>© <span id="year"></span> PAGENTE.Q All Rights Reserved</p>
+        </footer>
+
+    </div>
+
+    <!-- Log Out Confirmation Modal -->
+    <div id="logout-modal" class="modal-overlay">
+        <div class="modal-box space-y-5">
+            <div class="w-12 h-12 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 flex items-center justify-center text-2xl mx-auto">
+                <i class="ri-logout-box-r-line"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-xl font-bold text-white font-heading">You want to log out?</h3>
+                <p class="text-gray-300 text-sm">Please select your choice below.</p>
+            </div>
+            <div id="modal-actions" class="flex items-center justify-center gap-3 pt-2">
+                <button onclick="closeLogoutModal()" class="px-5 py-2.5 rounded-xl bg-gray-700/60 hover:bg-gray-700 text-gray-200 font-semibold text-sm transition-all border border-white/10 cursor-pointer">
+                    No
+                </button>
+                <button onclick="confirmLogout()" class="px-5 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold text-sm transition-all shadow-lg shadow-red-500/20 cursor-pointer flex items-center gap-2">
+                    <span>Yes</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Interactivity -->
+    <script>
+        // Set dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle Drawer
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        menuBtn.addEventListener('click', () => {
+            const isClosed = mobileMenu.classList.contains('hidden');
+            if (isClosed) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.classList.add('flex');
+                menuIcon.classList.remove('ri-menu-3-line');
+                menuIcon.classList.add('ri-close-line');
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                menuIcon.classList.remove('ri-close-line');
+                menuIcon.classList.add('ri-menu-3-line');
+            }
+        });
+
+        // Modal Handlers
+        const logoutModal = document.getElementById('logout-modal');
+
+        function openLogoutModal() {
+            logoutModal.classList.add('active');
+            // Close mobile menu if open
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('flex');
+            menuIcon.classList.remove('ri-close-line');
+            menuIcon.classList.add('ri-menu-3-line');
+        }
+
+        function closeLogoutModal() {
+            logoutModal.classList.remove('active');
+        }
+
+        function confirmLogout() {
+            const modalActions = document.getElementById('modal-actions');
+            modalActions.innerHTML = `
+                <div class="flex items-center gap-2 text-red-400 font-medium text-sm py-2">
+                    <div class="loader"></div>
+                    <span>Logging out...</span>
+                </div>
+            `;
+
+            setTimeout(() => {
+                window.location.href = "WEBSITE.html";
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
