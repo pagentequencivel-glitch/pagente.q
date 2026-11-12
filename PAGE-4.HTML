@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quencivel Pagente | Inspirational Portfolio</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: {
+                            900: '#090c10',
+                            800: '#0d1117',
+                            700: '#161b22',
+                            600: '#21262d'
+                        },
+                        accent: {
+                            emerald: '#10b981',
+                            teal: '#0d9488',
+                            cyan: '#38bdf8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Reset & Baseline Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: url("familyof4.jpg") no-repeat center / cover fixed;
+            color: #e6edf3;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 1.5rem;
+            position: relative;
+        }
+
+        /* Ambient Background Overlay */
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: 
+                radial-gradient(900px circle at 15% 20%, rgba(16, 185, 129, 0.12), transparent 60%),
+                radial-gradient(800px circle at 85% 80%, rgba(56, 189, 248, 0.1), transparent 60%),
+                radial-gradient(700px circle at 50% 50%, rgba(0, 0, 0, 0.35), transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Subtle Grain Texture */
+        .bg-grain {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Main Panel Container - Pure Transparent Glassmorphism */
+        .glass-panel {
+            background: rgba(13, 17, 23, 0.45);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 35px 70px -15px rgba(0, 0, 0, 0.65),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* Pure Glass Reflection Card */
+        .glass-card {
+            background: rgba(22, 27, 34, 0.35);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Interactive Rectangular Glass Cards with Hover Reveal */
+        .portfolio-card {
+            position: relative;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            height: 320px; /* Fixed height for clean rectangular shape */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+        }
+
+        .portfolio-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(13, 17, 23, 0.2) 0%, rgba(13, 17, 23, 0.95) 100%);
+            z-index: 1;
+            transition: background 0.4s ease;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 25px rgba(16, 185, 129, 0.25);
+        }
+
+        .portfolio-card:hover::before {
+            background: linear-gradient(180deg, rgba(13, 17, 23, 0.85) 0%, rgba(13, 17, 23, 0.98) 100%);
+        }
+
+        /* Smooth Reveal Content Animation */
+        .card-content {
+            position: relative;
+            z-index: 10;
+            transform: translateY(calc(100% - 70px));
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .portfolio-card:hover .card-content {
+            transform: translateY(0);
+        }
+
+        .card-details {
+            opacity: 0;
+            transition: opacity 0.35s ease 0.1s;
+        }
+
+        .portfolio-card:hover .card-details {
+            opacity: 1;
+        }
+
+        /* Card Image Backgrounds */
+        .card-work { background: url("research.jpg") center/cover no-repeat; }
+        .card-goals { background: url("anue.jpg") center/cover no-repeat; }
+        .card-values { background: url("family.jpg") center/cover no-repeat; }
+        .card-friends { background: url("my anue.png") center/cover no-repeat; }
+        .card-god { background: url("+.jpg") center/cover no-repeat; }
+        .card-cheerdance { background: url("CHEER DANCE (2).jpg") center/cover no-repeat; }
+
+        /* Typography */
+        h1, h2, .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Navigation Links */
+        .nav-link {
+            position: relative;
+            color: #cbd5e1;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.3rem 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        @media (min-width: 1280px) {
+            .nav-link {
+                font-size: 0.8125rem;
+                padding: 0.35rem 0.65rem;
+            }
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0.5rem;
+            right: 0.5rem;
+            height: 2px;
+            background: #10b981;
+            border-radius: 2px;
+            opacity: 0;
+            transform: scaleX(0);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        /* Log Out Button */
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            flex-shrink: 0;
+            backdrop-filter: blur(4px);
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.7);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+        }
+
+        /* Entrance Zoom Animation */
+        .animate-zoom-in {
+            animation: zoomIn 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.97) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #090c10; }
+        ::-webkit-scrollbar-thumb { background: #21262d; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #30363d; }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Subtle Background Layers -->
+    <div class="ambient-bg"></div>
+    <div class="bg-grain"></div>
+
+    <!-- Main Container Layout -->
+    <div class="glass-panel relative z-10 w-full max-w-7xl rounded-2xl md:rounded-3xl overflow-hidden animate-zoom-in my-auto flex flex-col min-h-[750px]">
+        
+        <!-- Header / Navigation Bar -->
+        <header class="w-full px-6 sm:px-8 md:px-10 py-5 flex items-center justify-between border-b border-white/10 relative z-30 gap-3">
+            
+            <!-- Brand Logo -->
+            <a href="PAGE-1.HTML" class="flex items-center gap-2 group shrink-0">
+                <span class="font-heading font-bold text-xl md:text-2xl lg:text-3xl tracking-tight text-white group-hover:text-emerald-400 transition-colors">
+                    Website.
+                </span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
+                <nav class="flex items-center gap-1 xl:gap-2 tracking-wide">
+                    <a href="PAGE-2.html" class="nav-link">Personal Reflection</a>
+                    <a href="PAGE-3.HTML" class="nav-link">Community Service or Advocacy</a>
+                    <a href="PAGE-4.HTML" class="nav-link active">Inspirational Portfolio</a>
+                    <a href="PAGE-5.html" class="nav-link">Educational or Information</a>
+                    <a href="PAGE-6.html" class="nav-link">Faith and Technology Integration</a>
+                </nav>
+
+                <!-- High Visibility Log Out Button -->
+                <a href="WEBSITE.html" class="logout-btn ml-1">
+                    <span>Log Out</span>
+                    <i class="ri-logout-box-r-line"></i>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="menu-btn" aria-label="Toggle Menu" class="lg:hidden text-2xl text-gray-300 hover:text-white p-2 rounded-lg border border-white/10 hover:bg-white/5 transition-colors">
+                <i class="ri-menu-3-line" id="menu-icon"></i>
+            </button>
+        </header>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-menu" class="hidden lg:hidden flex-col gap-3 px-6 py-5 border-b border-white/10 bg-obsidian-800/80 backdrop-blur-md">
+            <a href="PAGE-2.html" class="text-gray-300 hover:text-white py-1.5 transition-colors">Personal Reflection</a>
+            <a href="PAGE-3.HTML" class="text-gray-300 hover:text-white py-1.5 transition-colors">Community Service or Advocacy</a>
+            <a href="PAGE-4.HTML" class="text-emerald-400 font-medium py-1.5">Inspirational Portfolio</a>
+            <a href="PAGE-5.html" class="text-gray-300 hover:text-white py-1.5 transition-colors">Educational or Information</a>
+            <a href="PAGE-6.html" class="text-gray-300 hover:text-white py-1.5 transition-colors">Faith and Technology Integration</a>
+            <a href="WEBSITE.html" class="text-red-400 hover:text-red-300 py-1.5 flex items-center gap-1.5 font-semibold transition-colors border-t border-white/10 pt-3 mt-1">
+                <span>Log Out</span>
+                <i class="ri-logout-box-r-line"></i>
+            </a>
+        </div>
+
+        <!-- Main Content Section -->
+        <main class="flex-1 px-6 sm:px-12 md:px-16 py-12 md:py-16 flex flex-col justify-center space-y-10 md:space-y-12">
+            
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-mono font-medium tracking-wide backdrop-blur-sm">
+                    <i class="ri-sun-line"></i>
+                    <span>Light of the World</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+                    Inspirational <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-sky-400">Portfolio</span>
+                </h1>
+                <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                    Highlighting my work, goals, and guiding values reflecting purpose, faith, and the light that leads my journey.
+                </p>
+            </div>
+
+            <!-- Portfolio Grid (2 Columns x 3 Rows with Hover Reveal & Bible Verses) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 items-stretch pt-2">
+                
+                <!-- ROW 1 - Card 1: My Work -->
+                <div class="portfolio-card card-work p-6 sm:p-8">
+                    <div class="card-content w-full">
+                        <div class="flex items-center justify-between pb-3">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-white">My Work</h2>
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-xl backdrop-blur-sm">
+                                <i class="ri-briefcase-line"></i>
+                            </div>
+                        </div>
+
+                        <!-- Revealed on Hover -->
+                        <div class="card-details space-y-3 pt-2">
+                            <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
+                                My work reflects creativity, dedication, and continuous growth, aiming to contribute positively and inspire others through my action.
+                            </p>
+                            <div class="pt-2 border-t border-white/15 flex items-start gap-2 text-emerald-300 text-xs sm:text-sm italic font-mono">
+                                <i class="ri-book-open-line text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span>"Whatever you do, work at it with all your heart, as working for the Lord." — Colossians 3:23</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROW 1 - Card 2: My Goals -->
+                <div class="portfolio-card card-goals p-6 sm:p-8">
+                    <div class="card-content w-full">
+                        <div class="flex items-center justify-between pb-3">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-white">My Goals</h2>
+                            <div class="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-500/30 text-teal-400 flex items-center justify-center text-xl backdrop-blur-sm">
+                                <i class="ri-compass-3-line"></i>
+                            </div>
+                        </div>
+
+                        <!-- Revealed on Hover -->
+                        <div class="card-details space-y-3 pt-2">
+                            <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
+                                My goals is to grow in knowledge, character, and becoming a successful person someday that motivates and guides those around me.
+                            </p>
+                            <div class="pt-2 border-t border-white/15 flex items-start gap-2 text-teal-300 text-xs sm:text-sm italic font-mono">
+                                <i class="ri-book-open-line text-teal-400 shrink-0 mt-0.5"></i>
+                                <span>"For I know the plans I have for you, plans to give you hope and a future." — Jeremiah 29:11</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROW 2 - Card 3: My Values -->
+                <div class="portfolio-card card-values p-6 sm:p-8">
+                    <div class="card-content w-full">
+                        <div class="flex items-center justify-between pb-3">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-white">My Values</h2>
+                            <div class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-500/30 text-sky-400 flex items-center justify-center text-xl backdrop-blur-sm">
+                                <i class="ri-heart-3-line"></i>
+                            </div>
+                        </div>
+
+                        <!-- Revealed on Hover -->
+                        <div class="card-details space-y-3 pt-2">
+                            <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
+                                Guided by respect, compassion, and love, I aim to live with purpose and bring happiness into my family and friends.
+                            </p>
+                            <div class="pt-2 border-t border-white/15 flex items-start gap-2 text-sky-300 text-xs sm:text-sm italic font-mono">
+                                <i class="ri-book-open-line text-sky-400 shrink-0 mt-0.5"></i>
+                                <span>"Let all that you do be done in love." — 1 Corinthians 16:14</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROW 2 - Card 4: My Favorite Person -->
+                <div class="portfolio-card card-friends p-6 sm:p-8">
+                    <div class="card-content w-full">
+                        <div class="flex items-center justify-between pb-3">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-white">My Favorite Person</h2>
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-xl backdrop-blur-sm">
+                                <i class="ri-user-shared-line"></i>
+                            </div>
+                        </div>
+
+                        <!-- Revealed on Hover -->
+                        <div class="card-details space-y-3 pt-2">
+                            <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
+                                Surrounded by people who bring out the best in me, offering constant laughter, support, and genuine companionship.
+                            </p>
+                            <div class="pt-2 border-t border-white/15 flex items-start gap-2 text-emerald-300 text-xs sm:text-sm italic font-mono">
+                                <i class="ri-book-open-line text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span>"A friend loves at all times." — Proverbs 17:17</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROW 3 - Card 5: My Shepherd -->
+                <div class="portfolio-card card-god p-6 sm:p-8">
+                    <div class="card-content w-full">
+                        <div class="flex items-center justify-between pb-3">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-white">My Shepherd (God)</h2>
+                            <div class="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-500/30 text-teal-400 flex items-center justify-center text-xl backdrop-blur-sm">
+                                <i class="ri-sun-foggy-line"></i>
+                            </div>
+                        </div>
+
+                        <!-- Revealed on Hover -->
+                        <div class="card-details space-y-3 pt-2">
+                            <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
+                                My ultimate source of strength and guidance, keeping my spirit anchored through every challenge and blessing.
+                            </p>
+                            <div class="pt-2 border-t border-white/15 flex items-start gap-2 text-teal-300 text-xs sm:text-sm italic font-mono">
+                                <i class="ri-book-open-line text-teal-400 shrink-0 mt-0.5"></i>
+                                <span>"The Lord is my shepherd; I shall not want." — Psalm 23:1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROW 3 - Card 6: My Cheer Dance Family -->
+                <div class="portfolio-card card-cheerdance p-6 sm:p-8">
+                    <div class="card-content w-full">
+                        <div class="flex items-center justify-between pb-3">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-white">My Cheer Dance Family</h2>
+                            <div class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-500/30 text-sky-400 flex items-center justify-center text-xl backdrop-blur-sm">
+                                <i class="ri-team-line"></i>
+                            </div>
+                        </div>
+
+                        <!-- Revealed on Hover -->
+                        <div class="card-details space-y-3 pt-2">
+                            <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
+                                Bound by rhythm, hard work, and shared energy, creating unforgettable memories and teamwork on and off the stage.
+                            </p>
+                            <div class="pt-2 border-t border-white/15 flex items-start gap-2 text-sky-300 text-xs sm:text-sm italic font-mono">
+                                <i class="ri-book-open-line text-sky-400 shrink-0 mt-0.5"></i>
+                                <span>"Two are better than one, because they have a good return for their labor." — Ecclesiastes 4:9</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Lower Reflection Section -->
+            <div class="glass-card p-8 sm:p-10 md:p-12 rounded-2xl md:rounded-3xl max-w-5xl mx-auto w-full relative overflow-hidden mt-6">
+                <div class="flex items-center gap-3 border-b border-white/10 pb-5 mb-5">
+                    <i class="ri-lightbulb-line text-3xl text-emerald-400 shrink-0"></i>
+                    <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-white">The Light That Leads My Journey</h2>
+                </div>
+                <p class="text-gray-200 text-base sm:text-lg leading-relaxed">
+                    Being a student comes with a lot of pressure, late-night studying, and moments where I really doubt myself. But whenever things get overwhelming, my faith, my family, and my friends serve as a guiding light that keeps me moving forward. That light reminds me of my purpose, gives me hope, and inspires me to be a positive influence to others on campus. Ultimately, it doesn't just show me which path to take—it shapes the kind of person I am becoming every single day.
+                </p>
+            </div>
+
+        </main>
+
+        <!-- Footer Bar -->
+        <footer class="w-full px-6 md:px-10 py-6 border-t border-white/10 flex items-center justify-between text-xs sm:text-sm text-gray-400">
+            <p>© <span id="year"></span> PAGENTE.Q All Rights Reserved</p>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript Interactivity -->
+    <script>
+        // Set dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle Drawer
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        menuBtn.addEventListener('click', () => {
+            const isClosed = mobileMenu.classList.contains('hidden');
+            if (isClosed) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.classList.add('flex');
+                menuIcon.classList.remove('ri-menu-3-line');
+                menuIcon.classList.add('ri-close-line');
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                menuIcon.classList.remove('ri-close-line');
+                menuIcon.classList.add('ri-menu-3-line');
+            }
+        });
+    </script>
+</body>
+</html>
